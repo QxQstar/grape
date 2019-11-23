@@ -1,0 +1,19 @@
+{
+  "name": "grape",
+  "version": "0.0.1",
+  "description": "基于single-spa的微前端框架",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config ./build/webpack.config.js"
+  },
+  "author": "何遇",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  },
+  "dependencies": {
+    "single-spa": "^4.4.1"
+  }
+}
