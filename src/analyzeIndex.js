@@ -1,7 +1,4 @@
 import processTpl from './processTpl.js';
-function fetch(path) {
-    return window.fetch(path)
-}
 function getDomain(url) {
     try {
         // URL 构造函数不支持使用 // 前缀的 url
@@ -11,7 +8,7 @@ function getDomain(url) {
         return '';
     }
 }
-export default function analyzeHTML(projects) {
+export function analyzeHTML(projects,fetch) {
     return new Promise(function (resolve, reject) {
         const successProjects = [];
         const failProjects = [];
@@ -23,13 +20,9 @@ export default function analyzeHTML(projects) {
                     const { entry,scripts,innerStyles,outerStyles } = processTpl(html,getDomain(project.projectIndex));
                     // 入口js路径
                     project.main = entry;
-                    project.innerStyles.push(...innerStyles);
-                    project.outerStyles.push(...outerStyles);
-                    scripts.forEach(script => {
-                        if(script !== entry) {
-                            project.scripts.push(script)
-                        }
-                    });
+                    project.innerStyles = innerStyles;
+                    project.outerStyles = outerStyles;
+                    project.scripts = scripts.filter(item => item !== entry);
                     successProjects.push(project);
                 },() => {
                     failProjects.push(project);

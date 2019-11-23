@@ -3,20 +3,18 @@
  * @homepage https://github.com/kuitos/
  * @since 2018-09-03 15:04
  */
-
-const ALL_SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
-const SCRIPT_TAG_REGEX = /<(script)\s+((?!type=('|')text\/ng-template\3).)*?>.*?<\/\1>/is;
-const SCRIPT_SRC_REGEX = /.*\ssrc=('|")?([^>'"\s]+)/;
-const SCRIPT_ENTRY_REGEX = /.*\sentry\s*.*/;
-const LINK_TAG_REGEX = /<(link)\s+.*?>/gi;
-const LINK_IGNORE_REGEX = /.*ignore\s*.*/;
-const STYLE_TAG_REGEX = /<style[^>]*>[\s\S]*?<\/style>/gi;
-const STYLE_TYPE_REGEX = /\s+rel=('|")?stylesheet\1.*/;
-const STYLE_HREF_REGEX = /.*\shref=('|")?([^>'"\s]+)/;
-const STYLE_IGNORE_REGEX = /<style(\s+|\s+.+\s+)ignore(\s*|\s+.*)>/i;
-const HTML_COMMENT_REGEX = /<!--([\s\S]*?)-->/g;
-const SCRIPT_IGNORE_REGEX = /<script(\s+|\s+.+\s+)ignore(\s*|\s+.*)>/i;
-
+import {ALL_SCRIPT_REGEX,
+	SCRIPT_TAG_REGEX,
+	SCRIPT_SRC_REGEX,
+	SCRIPT_ENTRY_REGEX,
+	LINK_TAG_REGEX,
+	STYLE_TAG_REGEX,
+	STYLE_TYPE_REGEX,
+	STYLE_HREF_REGEX,
+	STYLE_IGNORE_REGEX,
+	HTML_COMMENT_REGEX,
+	SCRIPT_IGNORE_REGEX,
+	LINK_IGNORE_REGEX} from './helper/constants.js';
 function hasProtocol(url) {
 	return url.startsWith('//') || url.startsWith('http://') || url.startsWith('https://');
 }

@@ -1,29 +1,18 @@
 import {registerApplication, start} from 'single-spa'
 import {loadSourceBootstrap} from "./loadSource.js";
 import Loader from './loader.js';
+import {activeFns} from './helper/apps.js'
 export function bootstrapApp(apps) {
     registerApp(apps);
     start();
-}
-
-function isActive(location,page) {
-    let isShow = false;
-    if(location.hash.startsWith(`#${page}`)){
-        isShow = true
-    }
-    return isShow;
-}
-function activeFns(app) {
-    return function (location) {
-        return isActive(location,app.path)
-    }
 }
 function registerApp(projects) {
     projects.forEach(function (project) {
         function startRegister(app) {
             // 确保应用挂载点在页面中存在
             if(!app.domID || document.getElementById(app.domID)) {
-                registerApplication(app.name,
+                registerApplication(
+                    app.name,
                     () => {
                         return Loader.import(app.main).then(resData => {
                             return {
@@ -35,7 +24,9 @@ function registerApp(projects) {
                             }
                         })
                     },
-                    project.base ? (function () { return true }) : activeFns(project))
+                    activeFns(app),
+                    app.customProps
+                )
             } else {
                 setTimeout(function () {
                     startRegister(app);
