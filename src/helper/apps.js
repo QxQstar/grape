@@ -36,7 +36,7 @@ export function formatApps(apps) {
         };
         return {
             ...appConfig,
-            path:Array.isArray(appConfig.path) ? appConfig : [appConfig.path]
+            path:Array.isArray(appConfig.path) ? appConfig.path : [appConfig.path]
         }
     });
 }

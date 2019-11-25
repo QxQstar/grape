@@ -1,6 +1,6 @@
 {
   "name": "@hydesign/grape",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "基于single-spa的微前端框架",
   "main": "dist/index.js",
   "scripts": {
