@@ -4,12 +4,12 @@
 
 ## 安装
 ```cli
-npm install red-grape --save
+npm i @hydesign/grape --save
 ```
 
 ## 使用
 ```js
-import Grape from 'red-grape'
+import Grape from '@hydesign/grape'
 
 new Grape([
         {
@@ -22,3 +22,6 @@ new Grape([
     ])
     .start()
 ```
+
+## demo
+[github 源代码](https://github.com/QxQstar/single-spa-vue)
