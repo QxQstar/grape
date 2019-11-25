@@ -1,6 +1,8 @@
 
-const loader = (function () {
+ const Loader = (function () {
     const hasDocument = typeof document !== 'undefined';
+
+
     let baseUrl;
 
     if (hasDocument) {
@@ -96,14 +98,6 @@ const loader = (function () {
             return parentUrl.slice(0, parentUrl.length - pathname.length) + output.join('');
         }
     }
-
-    /*
-     * Import maps implementation
-     *
-     * To make lookups fast we pre-resolve the entire import map
-     * and then match based on backtracked hash lookups
-     *
-     */
     function getMatch (path, matchObj) {
         if (matchObj[path])
             return path;
@@ -434,6 +428,9 @@ const loader = (function () {
 
     let importMap = { imports: {}, scopes: {} };
 
+    systemJSPrototype.setImportMap = function (importMapVal) {
+        importMap.imports = importMapVal
+    };
 
     systemJSPrototype.resolve = function (id, parentUrl) {
         parentUrl = parentUrl || baseUrl;
@@ -489,204 +486,8 @@ const loader = (function () {
             document.head.appendChild(script);
         });
     };
-    return new SystemJS();
+     return SystemJS;
+
 }());
+export default Loader
 
-
-
-
-
-/*
- * Support for AMD loading
- */
-(function (global,System) {
-    const systemPrototype = System.constructor.prototype;
-
-    const emptyInstantiation = [[], function () { return {} }];
-
-    function unsupportedRequire () {
-        throw Error('AMD require not supported.');
-    }
-
-    function emptyFn () {}
-
-    const requireExportsModule = ['require', 'exports', 'module'];
-
-    function createAMDRegister (amdDefineDeps, amdDefineExec) {
-        const exports = {};
-        const module = { exports: exports };
-        const depModules = [];
-        const setters = [];
-        let splice = 0;
-        for (let i = 0; i < amdDefineDeps.length; i++) {
-            const id = amdDefineDeps[i];
-            const index = setters.length;
-            if (id === 'require') {
-                depModules[i] = unsupportedRequire;
-                splice++;
-            }
-            else if (id === 'module') {
-                depModules[i] = module;
-                splice++;
-            }
-            else if (id === 'exports') {
-                depModules[i] = exports;
-                splice++;
-            }
-            else {
-                // needed for ie11 lack of iteration scope
-                const idx = i;
-                setters.push(function (ns) {
-                    depModules[idx] = ns.__useDefault ? ns.default : ns;
-                });
-            }
-            if (splice)
-                amdDefineDeps[index] = id;
-        }
-        if (splice)
-            amdDefineDeps.length -= splice;
-        const amdExec = amdDefineExec;
-        return [amdDefineDeps, function (_export) {
-            _export({ default: exports, __useDefault: true });
-            return {
-                setters: setters,
-                execute: function () {
-                    module.exports = amdExec.apply(exports, depModules) || module.exports;
-                    if (exports !== module.exports)
-                        _export('default', module.exports);
-                }
-            };
-        }];
-    }
-
-    // hook System.register to know the last declaration binding
-    let lastRegisterDeclare;
-    const systemRegister = systemPrototype.register;
-    systemPrototype.register = function (name, deps, declare) {
-        lastRegisterDeclare = typeof name === 'string' ? declare : deps;
-        systemRegister.apply(this, arguments);
-    };
-
-    const instantiate = systemPrototype.instantiate;
-    systemPrototype.instantiate = function() {
-        // Reset "currently executing script"
-        amdDefineDeps = null;
-        return instantiate.apply(this, arguments);
-    };
-
-    const getRegister = systemPrototype.getRegister;
-    systemPrototype.getRegister = function () {
-        const register = getRegister.call(this);
-        // if its an actual System.register leave it
-        if (register && register[1] === lastRegisterDeclare)
-            return register;
-
-        // otherwise AMD takes priority
-        // no registration -> attempt AMD detection
-        if (!amdDefineDeps)
-            return register || emptyInstantiation;
-
-        const registration = createAMDRegister(amdDefineDeps, amdDefineExec);
-        amdDefineDeps = null;
-        return registration;
-    };
-    let amdDefineDeps, amdDefineExec;
-    global.define = function (name, deps, execute) {
-        // define('', [], function () {})
-        if (typeof name === 'string') {
-            if (amdDefineDeps) {
-                if (!System.registerRegistry)
-                    throw Error('Include the named register extension for SystemJS named AMD support.');
-                System.registerRegistry[name] = createAMDRegister(deps, execute);
-                amdDefineDeps = [];
-                amdDefineExec = emptyFn;
-                return;
-            }
-            else {
-                if (System.registerRegistry)
-                    System.registerRegistry[name] = createAMDRegister([].concat(deps), execute);
-                name = deps;
-                deps = execute;
-            }
-        }
-        // define([], function () {})
-        if (name instanceof Array) {
-            amdDefineDeps = name;
-            amdDefineExec = deps;
-        }
-        // define({})
-        else if (typeof name === 'object') {
-            amdDefineDeps = [];
-            amdDefineExec = function () { return name };
-        }
-        // define(function () {})
-        else if (typeof name === 'function') {
-            amdDefineDeps = requireExportsModule;
-            amdDefineExec = name;
-        }
-    };
-    global.define.amd = {};
-})(typeof self !== 'undefined' ? self : global,loader);
-
-
-/*
- * Named exports support for legacy module formats in SystemJS 2.0
- */
-
-
-
-(function (System) {
-    const systemJSPrototype = System.constructor.prototype;
-
-    // hook System.register to know the last declaration binding
-    let lastRegisterDeclare;
-    const systemRegister = systemJSPrototype.register;
-    systemJSPrototype.register = function (name, deps, declare) {
-        lastRegisterDeclare = typeof name === 'string' ? declare : deps;
-        systemRegister.apply(this, arguments);
-    };
-
-    const getRegister = systemJSPrototype.getRegister;
-    systemJSPrototype.getRegister = function () {
-        const register = getRegister.call(this);
-        // if it is an actual System.register call, then its ESM
-        // -> dont add named exports
-        if (!register || register[1] === lastRegisterDeclare || register[1].length === 0)
-            return register;
-
-        // otherwise it was provided by a custom instantiator
-        // -> extend the registration with named exports support
-        const registerDeclare = register[1];
-        register[1] = function (_export, _context) {
-            // hook the _export function to note the default export
-            let defaultExport, hasDefaultExport = false;
-            const declaration = registerDeclare.call(this, function (name, value) {
-                if (typeof name === 'object' && name.__useDefault)
-                    defaultExport = name.default, hasDefaultExport = true;
-                else if (name === 'default')
-                    defaultExport = value;
-                else if (name === '__useDefault')
-                    hasDefaultExport = true;
-                _export(name, value);
-            }, _context);
-            // hook the execute function
-            const execute = declaration.execute;
-            if (execute)
-                declaration.execute = function () {
-                    execute.call(this);
-                    // do a bulk export of the default export object
-                    // to export all its names as named exports
-                    if (hasDefaultExport && typeof defaultExport === 'object')
-                        for (let name in defaultExport) {
-                            // default is not a named export
-                            if (name !== 'default') {
-                                _export(name, defaultExport[name]);
-                            }
-                        }
-                };
-            return declaration;
-        };
-        return register;
-    };
-})(loader);
-export default loader

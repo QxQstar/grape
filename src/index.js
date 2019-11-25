@@ -1,22 +1,15 @@
 import {analyzeHTML} from './analyzeIndex.js';
 import {bootstrapApp} from './applications.js'
-import {DEFAULT_APP_CONFIG,OPTS_CONFIG} from './helper/constants.js'
-import {verifyOpts} from './helper/apps.js'
+import {OPTS_CONFIG} from './helper/constants.js'
+import {verifyOpts,formatApps} from './helper/apps.js'
+import loader from './loader/index.js'
 class Grape {
     constructor(apps){
-        this.apps = this.formatApps(apps);
+        this.apps = formatApps(apps);
     }
-    formatApps(apps){
-        return apps.map(app => {
-            const appConfig = {
-                ...DEFAULT_APP_CONFIG,
-                ...app,
-            };
-            return {
-                ...appConfig,
-                path:Array.isArray(appConfig.path) ? appConfig : [appConfig.path]
-            }
-        });
+     setImportMap(importMap){
+        loader.setImportMap(importMap);
+         return this;
     }
     start(opts = {}) {
         const myOpts = {

@@ -1,3 +1,5 @@
+import {DEFAULT_APP_CONFIG} from "./constants";
+
 export function activeFns(project) {
     return isBase(project) ? (function () { return true;}) : (function (location) {
         return isActive(location,project)
@@ -25,3 +27,18 @@ export function verifyOpts(opts){
          else resolve();
     })
 }
+
+export function formatApps(apps) {
+    return apps.map(app => {
+        const appConfig = {
+            ...DEFAULT_APP_CONFIG,
+            ...app,
+        };
+        return {
+            ...appConfig,
+            path:Array.isArray(appConfig.path) ? appConfig : [appConfig.path]
+        }
+    });
+}
+
+

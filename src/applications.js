@@ -1,6 +1,6 @@
 import {registerApplication, start} from 'single-spa'
 import {loadSourceBootstrap} from "./loadSource.js";
-import Loader from './loader.js';
+import Loader from './loader/index.js'
 import {activeFns} from './helper/apps.js'
 export function bootstrapApp(apps) {
     registerApp(apps);
