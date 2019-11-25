@@ -1,8 +1,8 @@
 {
   "name": "red-grape",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "基于single-spa的微前端框架",
-  "main": "./dist/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config ./build/webpack.config.js",
