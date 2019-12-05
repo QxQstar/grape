@@ -1,5 +1,5 @@
 import {registerApplication, start} from 'single-spa'
-import {loadSourceBootstrap} from "./loadSource.js";
+import {loadSourceBootstrap,insertSourceBootstrap} from "./loadSource.js";
 import Loader from './loader/index.js'
 import {activeFns} from './helper/apps.js'
 export function bootstrapApp(apps) {
@@ -17,6 +17,8 @@ function registerApp(projects) {
                         return Loader.import(app.main).then(resData => {
                             return {
                                 bootstrap:[ resData.bootstrap,
+                                    insertSourceBootstrap(app.innerStyles,'style'),
+                                    insertSourceBootstrap(app.innerScripts,'script'),
                                     loadSourceBootstrap(app.scripts,'script'),
                                     loadSourceBootstrap(app.outerStyles,'link') ],
                                 mount:resData.mount,

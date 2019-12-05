@@ -17,11 +17,12 @@ export function analyzeHTML(projects,fetch) {
                 .then(response => response.text())
                 .then(html => {
                     // 从html文件中匹配出这个项目的css，js路径
-                    const { entry,scripts,innerStyles,outerStyles } = processTpl(html,getDomain(project.projectIndex));
+                    const { entry,scripts,innerStyles,outerStyles ,innerScripts } = processTpl(html,getDomain(project.projectIndex));
                     // 入口js路径
                     project.main = entry;
                     project.innerStyles = innerStyles;
                     project.outerStyles = outerStyles;
+                    project.innerScripts = innerScripts;
                     project.scripts = scripts.filter(item => item !== entry);
                     successProjects.push(project);
                 },() => {

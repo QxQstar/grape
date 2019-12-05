@@ -15,17 +15,15 @@ import {ALL_SCRIPT_REGEX,
 	HTML_COMMENT_REGEX,
 	SCRIPT_IGNORE_REGEX,
 	LINK_IGNORE_REGEX} from './helper/constants.js';
+import {
+	getInlineCode
+} from './helper/tpl.js';
 function hasProtocol(url) {
 	return url.startsWith('//') || url.startsWith('http://') || url.startsWith('https://');
 }
 
 function getBaseDomain(url) {
 	return url.endsWith('/') ? url.substr(0, url.length - 1) : url;
-}
-function getInlineCode(match) {
-	const start = match.indexOf('>') + 1;
-	const end = match.lastIndexOf('<');
-	return match.substring(start, end);
 }
 export const genLinkReplaceSymbol = linkHref => `<!-- link ${linkHref} replaced by import-html-entry -->`;
 export const genScriptReplaceSymbol = scriptSrc => `<!-- script ${scriptSrc} replaced by import-html-entry -->`;
@@ -43,10 +41,14 @@ export const genIgnoreAssetReplaceSymbol = url => `<!-- ignore asset ${url || 'f
  * @returns {{template: void | string | *, scripts: *[], entry: *}}
  */
 export default function processTpl(tpl, domain) {
-
+	// 外部js脚本
 	let scripts = [];
+	// 外部样式
 	const outerStyles = [];
+	// 内嵌样式
 	const innerStyles = [];
+	// 内嵌js脚本
+	const innerScripts = [];
 	let entry = null;
 
 	const template = tpl
@@ -141,7 +143,7 @@ export default function processTpl(tpl, domain) {
 				const isPureCommentBlock = code.split(/[\r\n]+/).every(line => !line.trim() || line.trim().startsWith('//'));
 
 				if (!isPureCommentBlock) {
-					scripts.push(match);
+					innerScripts.push(match);
 				}
 
 				return inlineScriptReplaceSymbol;
@@ -158,6 +160,7 @@ export default function processTpl(tpl, domain) {
 		scripts,
 		innerStyles,
 		outerStyles,
+		innerScripts,
 		// set the last script as entry if have not set
 		entry: entry || scripts[scripts.length - 1],
 	};
