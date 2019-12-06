@@ -1,3 +1,19 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/QxQstar/grape/compare/0.0.5...1.0.0) (2019-12-06)
+
+
+### Bug Fixes
+
+* 解决当子项目的访问入口中有多个js脚本，子项目加载失败的bug ([7a906b8](https://github.com/QxQstar/grape/commit/7a906b8))
+
+
+### Features
+
+* 从子项目的访问入口中获取内嵌脚本和内嵌样式，并且将其插入到主项目的文档中 ([4155519](https://github.com/QxQstar/grape/commit/4155519))
+* 增加例子 ([d9024ca](https://github.com/QxQstar/grape/commit/d9024ca))
+
+
+
 <a name="0.0.5"></a>
 ## [0.0.5](https://github.com/QxQstar/grape/compare/v0.0.4...0.0.5) (2019-11-25)
 
