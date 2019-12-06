@@ -23,7 +23,7 @@ export function analyzeHTML(projects,fetch) {
                     project.innerStyles = innerStyles;
                     project.outerStyles = outerStyles;
                     project.innerScripts = innerScripts;
-                    project.scripts = scripts.filter(item => item !== entry);
+                    project.outerScripts = scripts.filter(item => item !== entry);
                     successProjects.push(project);
                 },() => {
                     failProjects.push(project);

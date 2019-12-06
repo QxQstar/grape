@@ -11,24 +11,12 @@ function registerApp(projects) {
         function startRegister(app) {
             // 确保应用挂载点在页面中存在
             if(!app.domID || document.getElementById(app.domID)) {
-                registerApplication(
-                    app.name,
-                    () => {
-                        return Loader.import(app.main).then(resData => {
-                            return {
-                                bootstrap:[ resData.bootstrap,
-                                    insertSourceBootstrap(app.innerStyles,'style'),
-                                    insertSourceBootstrap(app.innerScripts,'script'),
-                                    loadSourceBootstrap(app.scripts,'script'),
-                                    loadSourceBootstrap(app.outerStyles,'link') ],
-                                mount:resData.mount,
-                                unmount:resData.unmount
-                            }
-                        })
-                    },
-                    activeFns(app),
-                    app.customProps
-                )
+                Promise.all([
+                    loadSourceBootstrap(app.outerScripts,'script')(),
+                    insertSourceBootstrap(app.innerScripts,'script')()
+                ]).then(() => {
+                    register(app);
+                });
             } else {
                 setTimeout(function () {
                     startRegister(app);
@@ -38,4 +26,23 @@ function registerApp(projects) {
 
         startRegister(project);
     })
+}
+
+function register(app) {
+    registerApplication(
+        app.name,
+        () => {
+            return Loader.import(app.main).then(resData => {
+                return {
+                    bootstrap:[ resData.bootstrap,
+                        insertSourceBootstrap(app.innerStyles,'style'),
+                        loadSourceBootstrap(app.outerStyles,'link') ],
+                    mount:resData.mount,
+                    unmount:resData.unmount
+                }
+            })
+        },
+        activeFns(app),
+        app.customProps
+    )
 }
