@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config ./build/webpack.config.js",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-    "publish": "npm run build && npm publish --access public"
+    "pub": "npm run build && npm publish --access public"
   },
   "author": "何遇",
   "license": "ISC",
