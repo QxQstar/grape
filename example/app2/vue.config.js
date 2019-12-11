@@ -4,6 +4,7 @@ module.exports = {
         port:8050,
         headers: {
             "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":"Cache-Control"
         },
     },
     publicPath:process.env.VUE_APP_publicPath,

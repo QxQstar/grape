@@ -3,6 +3,7 @@ module.exports = {
     devServer:{
         port:9020,
         headers: {
+            "Access-Control-Allow-Headers":"Cache-Control",
             "Access-Control-Allow-Origin": "*",
         },
     },
