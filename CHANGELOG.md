@@ -1,3 +1,14 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/QxQstar/grape/compare/1.0.0...1.1.0) (2019-12-11)
+
+
+### Features
+
+* 修改demo ([91ab32b](https://github.com/QxQstar/grape/commit/91ab32b))
+* 用fetch获取项目访问入口时，在请求头中设置Cache-Contro: max-age=0 ([845465a](https://github.com/QxQstar/grape/commit/845465a))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/QxQstar/grape/compare/0.0.5...1.0.0) (2019-12-06)
 
