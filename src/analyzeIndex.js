@@ -14,9 +14,7 @@ export function analyzeHTML(projects,fetch) {
         const failProjects = [];
         projects.forEach(project => {
             fetch(project.projectIndex,{
-                headers: {
-                    'Cache-Control': 'max-age=0'
-                },
+                cache:'no-cache'
             })
                 .then(response => response.text())
                 .then(html => {
