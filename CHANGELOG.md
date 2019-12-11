@@ -1,3 +1,13 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/QxQstar/grape/compare/1.1.0...1.1.1) (2019-12-11)
+
+
+### Bug Fixes
+
+* 解决在请求头设置Cache-Control导出OPTIONS请求的bug ([561c7e8](https://github.com/QxQstar/grape/commit/561c7e8))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/QxQstar/grape/compare/1.0.0...1.1.0) (2019-12-11)
 
