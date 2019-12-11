@@ -13,7 +13,11 @@ export function analyzeHTML(projects,fetch) {
         const successProjects = [];
         const failProjects = [];
         projects.forEach(project => {
-            fetch(project.projectIndex)
+            fetch(project.projectIndex,{
+                headers: {
+                    'Cache-Control': 'max-age=0'
+                },
+            })
                 .then(response => response.text())
                 .then(html => {
                     // 从html文件中匹配出这个项目的css，js路径
