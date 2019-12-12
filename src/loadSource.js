@@ -4,7 +4,7 @@ import {getInlineCode} from './helper/tpl.js';
 function loadScript(path) {
     const scriptDom = document.createElement('script');
     scriptDom.src=path;
-    scriptDom.type='module';
+    scriptDom.type='text/javascript';
     document.body.appendChild(scriptDom);
 
     return scriptDom;
@@ -52,7 +52,7 @@ export function loadSourceBootstrap(sourcePath,type='script') {
 
 function insertScript(sourceText) {
     const scriptDom = document.createElement('script');
-    scriptDom.type='module';
+    scriptDom.type='text/javascript';
     scriptDom.innerHTML=sourceText;
     document.body.appendChild(scriptDom);
 }
