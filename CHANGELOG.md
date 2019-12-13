@@ -1,3 +1,13 @@
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/QxQstar/grape/compare/1.1.1...1.1.2) (2019-12-13)
+
+
+### Bug Fixes
+
+* 将js脚本的type设置成text/javascript ([c6602bb](https://github.com/QxQstar/grape/commit/c6602bb))
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/QxQstar/grape/compare/1.1.0...1.1.1) (2019-12-11)
 
