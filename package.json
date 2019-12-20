@@ -12,6 +12,11 @@
   "author": "何遇",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/polyfill": "^7.7.0",
+    "@babel/preset-env": "^7.7.7",
+    "babel-loader": "^8.0.6",
     "commitlint": "^8.2.0",
     "conventional-changelog-cli": "^2.0.28",
     "husky": "^3.1.0",

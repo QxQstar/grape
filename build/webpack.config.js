@@ -10,5 +10,19 @@ module.exports = {
         libraryTarget: 'umd',
         libraryExport: 'default',
         library: 'GRAPE',
+    },
+    module:{
+        rules:[
+            {
+                test:/\.js$/,
+                exclude:/(node_modules)/,//排除掉node_module目录
+                include: [
+                    path.resolve(__dirname, '../src')
+                ],
+                use:{
+                    loader:'babel-loader'
+                }
+            }
+        ]
     }
 };
