@@ -1,3 +1,13 @@
+<a name="1.1.3"></a>
+## [1.1.3](https://github.com/QxQstar/grape/compare/1.1.2...1.1.3) (2019-12-20)
+
+
+### Features
+
+* 使用babel编译js代码 ([c1b2d77](https://github.com/QxQstar/grape/commit/c1b2d77))
+
+
+
 <a name="1.1.2"></a>
 ## [1.1.2](https://github.com/QxQstar/grape/compare/1.1.1...1.1.2) (2019-12-13)
 
