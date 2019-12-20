@@ -3,6 +3,7 @@ import singleSpaVue from 'single-spa-vue';
 import element from 'element-ui';
 import App from './App.vue';
 // import {cloneDeep} from 'loadsh'
+import './mian.css'
 import router from './router';
  Vue.use(element);
 Vue.config.productionTip = false;

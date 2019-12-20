@@ -1,5 +1,5 @@
 <template>
-<div> app1 detail</div>
+<div class="detail"> app1 detail</div>
 </template>
 
 <script>
@@ -15,5 +15,7 @@
 </script>
 
 <style scoped>
-
+    .detail{
+        color: aqua;
+    }
 </style>

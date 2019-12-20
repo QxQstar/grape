@@ -1,5 +1,5 @@
 <template>
-<div>app1 list</div>
+<div class="list">app1 list</div>
 </template>
 
 <script>
@@ -15,5 +15,7 @@
 </script>
 
 <style scoped>
-
+    .list{
+        color: red;
+    }
 </style>
