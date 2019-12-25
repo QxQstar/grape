@@ -12,6 +12,11 @@ new Grape([
     name:'app2',
     projectIndex:'http://localhost:8050',
     path:'#/app2'
+  },
+  {
+    name:'psi',
+    projectIndex:'http://saas-fe.saas1.market-mis.wmdev2.lsh123.com/mis-new/',
+    path:'#/saasfe'
   }
 ]).start();
 Vue.config.productionTip = false;

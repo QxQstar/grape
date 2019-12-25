@@ -1,3 +1,18 @@
+<a name="1.1.4"></a>
+## [1.1.4](https://github.com/QxQstar/grape/compare/1.1.3...1.1.4) (2019-12-25)
+
+
+### Bug Fixes
+
+* 确保资源的加载顺序 ([80241e3](https://github.com/QxQstar/grape/commit/80241e3))
+
+
+### Features
+
+* 修改demo ([ad4ec83](https://github.com/QxQstar/grape/commit/ad4ec83))
+
+
+
 <a name="1.1.3"></a>
 ## [1.1.3](https://github.com/QxQstar/grape/compare/1.1.2...1.1.3) (2019-12-20)
 
