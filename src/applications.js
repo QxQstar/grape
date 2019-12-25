@@ -11,6 +11,7 @@ function registerApp(projects) {
         function startRegister(app) {
             // 确保应用挂载点在页面中存在
             if(!app.domID || document.getElementById(app.domID)) {
+                // 将入口js依赖的js资源加载完了再注册应用
                 Promise.all([
                     loadSourceBootstrap(app.outerScripts,'script')(),
                     insertSourceBootstrap(app.innerScripts,'script')()

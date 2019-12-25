@@ -24,6 +24,7 @@ function load(path,type) {
         if (dom.readyState) {
             dom.onreadystatechange = () => {
                 if (dom.readyState === "complete" || dom.readyState === 'loaded') {
+                    dom.onreadystatechange = null;
                     resolve()
                 }
             }
@@ -38,13 +39,13 @@ function load(path,type) {
 export function loadSourceBootstrap(sourcePath,type='script') {
     return function () {
         return new Promise(function (resolve) {
-            const allPromise = [];
-            sourcePath.forEach(path => {
-                allPromise.push(load(path,type))
-            });
-            Promise.all(allPromise).then(() => {
+            (async function traverse () {
+                // 确保上一个资源加载完成之后再加载下一个资源
+                for(const path of sourcePath) {
+                    await load(path,type)
+                }
                 resolve();
-            })
+            })()
         })
     }
 }
