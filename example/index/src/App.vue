@@ -2,8 +2,7 @@
   <div id="app">
     <div id="nav">
       <router-link to="/app1">app1</router-link> |
-      <router-link to="/app2">app2</router-link> |
-      <router-link to="/saasfe/mis-new">psi</router-link>
+      <router-link to="/app2">app2</router-link>
     </div>
     <div id="main"></div>
   </div>
