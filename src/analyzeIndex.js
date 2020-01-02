@@ -45,6 +45,7 @@ function analyzeHTML(app,fetch) {
                         startFetch(app,fetch)
                     },repeatParams.repeatInterval)
                 } else {
+                    window.dispatchEvent(new CustomEvent("grape: app-fetch-fail", app));
                     console.error(app.name + ' load error')
                 }
             })
