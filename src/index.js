@@ -1,7 +1,8 @@
 import {analyzeAppsHTML} from './analyzeIndex.js';
 import {OPTS_CONFIG} from './helper/constants.js'
-import {verifyOpts,formatApps} from './helper/apps.js'
+import {verifyOpts,formatApps} from './helper/params.js'
 import loader from './loader/index.js'
+
 class Grape {
     constructor(apps){
         this.apps = formatApps(apps);

@@ -6,7 +6,12 @@ export const DEFAULT_APP_CONFIG = {
     customProps:{}
 };
 export const OPTS_CONFIG = {
-    fetch:window.fetch
+    fetch:window.fetch,
+
+    // 项目获取失败之后重新获取项目的次数
+    repeatNum:1,
+    // 项目获取失败之后重新获取项目的毫秒数
+    repeatInterval:2000
 };
 export const ALL_SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
 export const SCRIPT_TAG_REGEX = /<(script)\s+((?!type=('|')text\/ng-template\3).)*?>.*?<\/\1>/is;
