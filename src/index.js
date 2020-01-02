@@ -1,5 +1,4 @@
-import {analyzeHTML} from './analyzeIndex.js';
-import {bootstrapApp} from './applications.js'
+import {analyzeAppsHTML} from './analyzeIndex.js';
 import {OPTS_CONFIG} from './helper/constants.js'
 import {verifyOpts,formatApps} from './helper/apps.js'
 import loader from './loader/index.js'
@@ -12,17 +11,12 @@ class Grape {
          return this;
     }
     start(opts = {}) {
-        const myOpts = {
+        const appsOpts = {
             ...OPTS_CONFIG,
             ...opts
         };
-        verifyOpts(myOpts).then(() => {
-            analyzeHTML(this.apps,myOpts.fetch)
-                .then((projects) => {
-                    bootstrapApp(projects);
-                },() => {
-                    console.error('all fail')
-                })
+        verifyOpts(appsOpts).then(() => {
+            analyzeAppsHTML(this.apps,appsOpts.fetch)
         },(err) => {
             console.error(err)
         })

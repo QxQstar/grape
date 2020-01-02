@@ -1,4 +1,5 @@
 import {DEFAULT_APP_CONFIG} from "./constants";
+let started = false;
 
 export function activeFns(project) {
     return isBase(project) ? (function () { return true;}) : (function (location) {
@@ -41,4 +42,10 @@ export function formatApps(apps) {
     });
 }
 
+export function isStarted() {
+    return started;
+}
 
+export function setStarted(value) {
+    started = value;
+}

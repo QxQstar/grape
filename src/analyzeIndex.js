@@ -1,4 +1,5 @@
 import processTpl from './processTpl.js';
+import {bootstrapApp} from './applications.js'
 function getDomain(url) {
     try {
         // URL 构造函数不支持使用 // 前缀的 url
@@ -8,36 +9,32 @@ function getDomain(url) {
         return '';
     }
 }
-export function analyzeHTML(projects,fetch) {
-    return new Promise(function (resolve, reject) {
-        const successProjects = [];
-        const failProjects = [];
-        projects.forEach(project => {
-            fetch(project.projectIndex,{
-                cache:'no-cache'
-            })
-                .then(response => response.text())
-                .then(html => {
-                    // 从html文件中匹配出这个项目的css，js路径
-                    const { entry,scripts,innerStyles,outerStyles ,innerScripts } = processTpl(html,getDomain(project.projectIndex));
-                    // 入口js路径
-                    project.main = entry;
-                    project.innerStyles = innerStyles;
-                    project.outerStyles = outerStyles;
-                    project.innerScripts = innerScripts;
-                    project.outerScripts = scripts.filter(item => item !== entry);
-                    successProjects.push(project);
-                },() => {
-                    failProjects.push(project);
-                    console.error(project.name + ' load error')
-                })
-                .then(() => {
-                    // 所以的promise的状态都改变之后返回结果
-                    if(successProjects.length + failProjects.length >= projects.length) {
-                        if(successProjects.length >0 ) resolve(successProjects);
-                        else reject(failProjects);
-                    }
-                });
-        })
+export function analyzeAppsHTML(apps,fetch) {
+    apps.forEach(app => {
+        analyzeHTML(app,fetch);
     })
+}
+
+function analyzeHTML(app,fetch) {
+    fetch(app.projectIndex,{
+        cache:'no-cache'
+    })
+        .then(response => response.text())
+        .then(html => {
+            // 从html文件中匹配出这个项目的css，js路径
+            const { entry,scripts,innerStyles,outerStyles ,innerScripts } = processTpl(html,getDomain(app.projectIndex));
+
+            // 入口js路径
+            app.main = entry;
+            app.innerStyles = innerStyles;
+            app.outerStyles = outerStyles;
+            app.innerScripts = innerScripts;
+            app.outerScripts = scripts.filter(item => item !== entry);
+
+            // 注册项目
+            bootstrapApp(app);
+        },() => {
+            console.error(app.name + ' load error')
+        })
+
 }
