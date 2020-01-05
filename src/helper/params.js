@@ -1,26 +1,18 @@
-import {DEFAULT_APP_CONFIG, OPTS_CONFIG} from "./constants";
+import { OPTS_CONFIG} from "./constants";
 import {isFunction} from './utils.js'
 
-let resultOpts = null;
+let resultOpts = OPTS_CONFIG;
 
-export function formatApps(apps) {
-    return apps.map(app => {
-        const appConfig = {
-            ...DEFAULT_APP_CONFIG,
-            ...app,
-        };
-        return {
-            ...appConfig,
-            path:Array.isArray(appConfig.path) ? appConfig.path : [appConfig.path]
-        }
-    });
-}
 
 function setOpts(opts) {
     resultOpts = {
         ...OPTS_CONFIG,
         ...opts
     };
+}
+
+export function getOpts() {
+    return resultOpts;
 }
 
 export function getRepeatParams() {
@@ -32,9 +24,9 @@ export function getRepeatParams() {
 }
 export function verifyOpts(opts){
     setOpts(opts);
-
+    const resultOpts = getOpts();
     return new Promise(function (resolve, reject) {
         if(!isFunction(resultOpts.fetch)) reject('fetch is not function');
-        else resolve();
+        else resolve(resultOpts);
     })
 }

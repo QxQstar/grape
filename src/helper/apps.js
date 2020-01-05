@@ -1,4 +1,5 @@
 let started = false;
+import {NOT_LOADED,LOADED,LOAD_ERROR,DEFAULT_APP_CONFIG} from './constants.js'
 
 export function activeFns(project) {
     return isBase(project) ? (function () { return true;}) : (function (location) {
@@ -28,3 +29,52 @@ export function isStarted() {
 export function setStarted(value) {
     started = value;
 }
+
+
+export const apps = {
+    data:[],
+    findApp(appName){
+        return this.data.find(app => app.name === appName);
+    },
+    changeAppStatus(app,status){
+        app.status = status;
+        return app;
+    },
+    formatApp(app){
+        const appConfig = {
+            ...DEFAULT_APP_CONFIG,
+            ...app,
+        };
+        return {
+            ...appConfig,
+            path:Array.isArray(appConfig.path) ? appConfig.path : [appConfig.path]
+        }
+    },
+    addApp(app){
+        const appConf = this.formatApp(app);
+        this.data.push(
+            this.changeAppStatus(appConf,NOT_LOADED)
+        );
+
+        return appConf;
+    },
+    handleApp(app){
+        return new Promise( (resolve, reject) => {
+            const appInData = this.findApp(app.name);
+            if(!appInData) {
+                const formatApp = this.addApp(app);
+                resolve(formatApp);
+            } else if(this.isLoadError(appInData)){
+                this.changeAppStatus(appInData,NOT_LOADED);
+                resolve(appInData);
+            } else {
+                reject(app.name + ' is ' + LOADED)
+            }
+        });
+    },
+    isLoadError(app){
+       return app.status ===  LOAD_ERROR
+    }
+}
+
+

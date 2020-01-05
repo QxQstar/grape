@@ -1,7 +1,7 @@
 import {getInlineCode} from './helper/tpl.js';
 
 
-function loadScript(path) {
+function createScript(path) {
     const scriptDom = document.createElement('script');
     scriptDom.src=path;
     scriptDom.type='text/javascript';
@@ -9,7 +9,7 @@ function loadScript(path) {
 
     return scriptDom;
 }
-function loadLink(path) {
+function createLink(path) {
     const linkDom = document.createElement('link');
     linkDom.href=path;
     linkDom.rel='stylesheet';
@@ -19,8 +19,8 @@ function loadLink(path) {
 }
 
 function load(path,type) {
-    const dom = type === 'script' ? loadScript(path) : loadLink(path);
-    return new Promise(function (resolve) {
+    const dom = type === 'script' ? createScript(path) : createLink(path);
+    return new Promise( (resolve,reject) => {
         if (dom.readyState) {
             dom.onreadystatechange = () => {
                 if (dom.readyState === "complete" || dom.readyState === 'loaded') {
@@ -33,16 +33,23 @@ function load(path,type) {
                 resolve()
             }
         }
+        dom.onerror = function () {
+            reject();
+        }
     })
 }
 // 将外部js脚本/css样式插入文档中
 export function loadSourceBootstrap(sourcePath,type='script') {
     return function () {
-        return new Promise(function (resolve) {
+        return new Promise(function (resolve,reject) {
             (async function traverse () {
                 // 确保上一个资源加载完成之后再加载下一个资源
                 for(const path of sourcePath) {
-                    await load(path,type)
+                    try {
+                        await load(path,type)
+                    } catch (e) {
+                       reject();
+                    }
                 }
                 resolve();
             })()

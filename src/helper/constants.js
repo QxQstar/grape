@@ -25,3 +25,8 @@ export const STYLE_HREF_REGEX = /.*\shref=('|")?([^>'"\s]+)/;
 export const STYLE_IGNORE_REGEX = /<style(\s+|\s+.+\s+)ignore(\s*|\s+.*)>/i;
 export const HTML_COMMENT_REGEX = /<!--([\s\S]*?)-->/g;
 export const SCRIPT_IGNORE_REGEX = /<script(\s+|\s+.+\s+)ignore(\s*|\s+.*)>/i;
+
+// app status
+export const NOT_LOADED = "NOT_LOADED";
+export const LOAD_ERROR = "LOAD_ERROR";
+export const LOADED = "LOADED";

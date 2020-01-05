@@ -1,7 +1,8 @@
 import {registerApplication, start} from 'single-spa'
 import {loadSourceBootstrap,insertSourceBootstrap} from "./loadSource.js";
 import Loader from './loader/index.js'
-import {activeFns,isStarted,setStarted} from './helper/apps.js'
+import {activeFns,isStarted,setStarted,apps} from './helper/apps.js'
+import {LOAD_ERROR,LOADED} from './helper/constants.js'
 export function bootstrapApp(app) {
 
     registerApp(app);
@@ -12,7 +13,6 @@ export function bootstrapApp(app) {
     }
 }
 function registerApp(app) {
-
     function startRegister(app) {
         // 确保应用挂载点在页面中存在
         if(!app.domID || document.getElementById(app.domID)) {
@@ -21,7 +21,10 @@ function registerApp(app) {
                 loadSourceBootstrap(app.outerScripts,'script')(),
                 insertSourceBootstrap(app.innerScripts,'script')()
             ]).then(() => {
+                apps.changeAppStatus(app,LOADED);
                 register(app);
+            },() => {
+                apps.changeAppStatus(app,LOAD_ERROR)
             });
         } else {
             setTimeout(function () {
