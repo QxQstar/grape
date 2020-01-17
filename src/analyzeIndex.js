@@ -19,6 +19,8 @@ export function analyzeHTML(app,fetch) {
 
     appHelper.handleApp(app).then((appConf) => {
         fetchHTML(appConf,fetch);
+    },(msg) => {
+
     });
 
     function fetchHTML(app,fetch) {

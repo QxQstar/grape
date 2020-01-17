@@ -36,21 +36,38 @@ function registerApp(app) {
     startRegister(app);
 }
 
+function loadAppIndex(app) {
+    return new Promise(function (resolve, reject) {
+        // 入口函数 app 的入口文件，并且得到入口文件中暴露的钩子函数
+        Loader.import(app.main).then(resData => {
+            if(resData.bootstrap && resData.mount && resData.unmount) {
+                resolve(resData);
+            } else {
+                reject(`${app.name} 的 bootstrap ，mount 或者 unmount 不存在`)
+            }
+        })
+    })
+}
 function register(app) {
-    registerApplication(
-        app.name,
-        () => {
-            return Loader.import(app.main).then(resData => {
-                return {
-                    bootstrap:[ resData.bootstrap,
-                        insertSourceBootstrap(app.innerStyles,'style'),
-                        loadSourceBootstrap(app.outerStyles,'link') ],
-                    mount:resData.mount,
-                    unmount:resData.unmount
-                }
-            })
-        },
-        activeFns(app),
-        app.customProps
-    )
+    loadAppIndex(app).then(appIndexData => {
+        registerApplication(
+            app.name,
+            () => {
+                return Promise.resolve(appIndexData).then(resData => {
+                    return {
+                        bootstrap:[ resData.bootstrap,
+                            insertSourceBootstrap(app.innerStyles,'style'),
+                            loadSourceBootstrap(app.outerStyles,'link') ],
+                        mount:resData.mount,
+                        unmount:resData.unmount
+                    }
+                })
+            },
+            activeFns(app),
+            app.customProps
+        )
+    },(msg) => {
+        apps.changeAppStatus(app,LOAD_ERROR);
+        console.error(msg);
+    });
 }
