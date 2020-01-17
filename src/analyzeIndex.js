@@ -2,7 +2,7 @@ import processTpl from './processTpl.js';
 import { bootstrapApp } from './applications.js'
 import { getRepeatParams } from './helper/params.js'
 import { apps as appHelper} from './helper/apps.js'
-import { LOAD_ERROR } from './helper/constants.js'
+import { LOAD_ERROR,LOADING } from './helper/constants.js'
 function getDomain(url) {
     try {
         // URL 构造函数不支持使用 // 前缀的 url
@@ -18,6 +18,7 @@ export function analyzeHTML(app,fetch) {
         repeatParams = getRepeatParams();
 
     appHelper.handleApp(app).then((appConf) => {
+        appHelper.changeAppStatus(app,LOADING);
         fetchHTML(appConf,fetch);
     },(msg) => {
 
@@ -48,7 +49,8 @@ export function analyzeHTML(app,fetch) {
                     },repeatParams.repeatInterval)
                 } else {
                     appHelper.changeAppStatus(app,'LOAD_ERROR');
-                    window.dispatchEvent(new CustomEvent("grape: app-fetch-fail", app));
+                    console.error(`${app.name}的 html entry 加载失败`);
+                    window.dispatchEvent(new CustomEvent("grape: app-html-fetch-fail", app));
                 }
             })
     }

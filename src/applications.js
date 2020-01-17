@@ -1,8 +1,8 @@
 import {registerApplication, start} from 'single-spa'
 import {loadSourceBootstrap,insertSourceBootstrap} from "./loadSource.js";
 import Loader from './loader/index.js'
-import {activeFns,isStarted,setStarted,apps} from './helper/apps.js'
-import {LOAD_ERROR,LOADED} from './helper/constants.js'
+import {activeFns,isStarted,setStarted,apps as appHelper} from './helper/apps.js'
+import {LOAD_ERROR,LOADED,REGISTER_ERROR,REGISTERED} from './helper/constants.js'
 export function bootstrapApp(app) {
 
     registerApp(app);
@@ -21,10 +21,9 @@ function registerApp(app) {
                 loadSourceBootstrap(app.outerScripts,'script')(),
                 insertSourceBootstrap(app.innerScripts,'script')()
             ]).then(() => {
-                apps.changeAppStatus(app,LOADED);
                 register(app);
             },() => {
-                apps.changeAppStatus(app,LOAD_ERROR)
+                appHelper.changeAppStatus(app,LOAD_ERROR)
             });
         } else {
             setTimeout(function () {
@@ -38,18 +37,28 @@ function registerApp(app) {
 
 function loadAppIndex(app) {
     return new Promise(function (resolve, reject) {
-        // 入口函数 app 的入口文件，并且得到入口文件中暴露的钩子函数
+        // 加载 app 的入口 js 文件，并且得到入口文件中暴露的钩子函数
         Loader.import(app.main).then(resData => {
+            appHelper.changeAppStatus(app,LOADED);
             if(resData.bootstrap && resData.mount && resData.unmount) {
                 resolve(resData);
             } else {
-                reject(`${app.name} 的 bootstrap ，mount 或者 unmount 不存在`)
+                reject({
+                    msg:`${app.name} 的 bootstrap ，mount 或者 unmount 不存在`,
+                    status:REGISTER_ERROR
+                })
             }
+        },() => {
+            reject({
+                msg:`${app.name} 的入口 js 加载失败`,
+                status:LOAD_ERROR
+            });
         })
     })
 }
 function register(app) {
     loadAppIndex(app).then(appIndexData => {
+        appHelper.changeAppStatus(app,REGISTERED);
         registerApplication(
             app.name,
             () => {
@@ -66,8 +75,8 @@ function register(app) {
             activeFns(app),
             app.customProps
         )
-    },(msg) => {
-        apps.changeAppStatus(app,LOAD_ERROR);
-        console.error(msg);
+    },(error) => {
+        appHelper.changeAppStatus(app,error.status);
+        console.error(error.msg);
     });
 }

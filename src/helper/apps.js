@@ -1,5 +1,5 @@
 let started = false;
-import {NOT_LOADED,LOADED,LOAD_ERROR,DEFAULT_APP_CONFIG} from './constants.js'
+import {NOT_LOAD,LOAD_ERROR,DEFAULT_APP_CONFIG,REGISTER_ERROR} from './constants.js'
 
 export function activeFns(project) {
     return isBase(project) ? (function () { return true;}) : (function (location) {
@@ -53,7 +53,7 @@ export const apps = {
     addApp(app){
         const appConf = this.formatApp(app);
         this.data.push(
-            this.changeAppStatus(appConf,NOT_LOADED)
+            this.changeAppStatus(appConf,NOT_LOAD)
         );
 
         return appConf;
@@ -64,16 +64,16 @@ export const apps = {
             if(!appInData) {
                 const formatApp = this.addApp(app);
                 resolve(formatApp);
-            } else if(this.isLoadError(appInData)){
-                this.changeAppStatus(appInData,NOT_LOADED);
+            } else if(this.needRepeatLoad(appInData)){
+                this.changeAppStatus(appInData,NOT_LOAD);
                 resolve(appInData);
             } else {
-                reject(app.name + ' is ' + LOADED)
+                reject(app.name + ' is loaded')
             }
         });
     },
-    isLoadError(app){
-       return app.status ===  LOAD_ERROR
+    needRepeatLoad(app){
+       return app.status ===  LOAD_ERROR || app.status === REGISTER_ERROR
     }
 }
 

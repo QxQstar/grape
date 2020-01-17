@@ -27,6 +27,10 @@ export const HTML_COMMENT_REGEX = /<!--([\s\S]*?)-->/g;
 export const SCRIPT_IGNORE_REGEX = /<script(\s+|\s+.+\s+)ignore(\s*|\s+.*)>/i;
 
 // app status
-export const NOT_LOADED = "NOT_LOADED";
+export const NOT_LOAD = "NOT_LOAD";
 export const LOAD_ERROR = "LOAD_ERROR";
 export const LOADED = "LOADED";
+export const LOADING = "LOADING";
+export const REGISTERED = "REGISTERED";
+export const REGISTER_ERROR = "REGISTER_ERROR";
+
