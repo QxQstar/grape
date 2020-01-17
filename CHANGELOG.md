@@ -1,3 +1,19 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/QxQstar/grape/compare/1.1.4...1.2.0) (2020-01-17)
+
+
+### Features
+
+* app获取失败之后可以重新获取 ([64db23b](https://github.com/QxQstar/grape/commit/64db23b))
+* 判断入口函数中是否导出了钩子函数 ([f3fc921](https://github.com/QxQstar/grape/commit/f3fc921))
+* 升级[@hydesign](https://github.com/hydesign)/grape ([2d44ca0](https://github.com/QxQstar/grape/commit/2d44ca0))
+* 单独注册每一个子项目 ([473c9ce](https://github.com/QxQstar/grape/commit/473c9ce))
+* 增加 app 的状态 ([8dc5084](https://github.com/QxQstar/grape/commit/8dc5084))
+* 给 grape 对象新增 loadApp 方法 ([c324a99](https://github.com/QxQstar/grape/commit/c324a99))
+* 项目加载失败之后触发浏览器自定义事件 ([0cc608e](https://github.com/QxQstar/grape/commit/0cc608e))
+
+
+
 <a name="1.1.4"></a>
 ## [1.1.4](https://github.com/QxQstar/grape/compare/1.1.3...1.1.4) (2019-12-25)
 
