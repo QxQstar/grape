@@ -14,19 +14,18 @@ class Grape {
     }
     start(opts = {}) {
         isStart = true;
-        verifyOpts(opts).then(() => {
-            originalData.forEach(app => Grape.loadApp(app));
-        },(err) => {
-            console.error(err)
-        });
-
-        return this;
-
+        return new Promise(function (resolve, reject) {
+            verifyOpts(opts).then(() => {
+                originalData.forEach(app => Grape.loadApp(app));
+                resolve();
+            },(err) => {
+                reject(err)
+            });
+        })
     }
     static loadApp(app){
         if(isStart) analyzeHTML(app,getOpts().fetch);
         else console.error('grape 还没有被启动，调用 grape.start() 去启动 grape')
-
     }
     get apps() {
         return appHelper.data
