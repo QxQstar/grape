@@ -43,7 +43,7 @@ new Grape([
 
 #### start 方法
 
-start 方法用于 启动 grape, start 方法可以接受一个对象作为参数
+start 方法用于 启动 grape, start 方法可以接受一个对象作为参数，它返回一个 promise
 
 ```
 grape.start(opts)
