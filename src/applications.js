@@ -48,9 +48,9 @@ function loadAppIndex(app) {
                     status:REGISTER_ERROR
                 })
             }
-        },() => {
+        },(error) => {
             reject({
-                msg:`${app.name} 的入口 js 加载失败`,
+                msg:`${app.name} 加载入口 js 失败了 -> ${error}`,
                 status:LOAD_ERROR
             });
         })
