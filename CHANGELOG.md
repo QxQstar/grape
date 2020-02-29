@@ -1,3 +1,15 @@
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/QxQstar/grape/compare/1.2.0...1.3.0) (2020-02-29)
+
+
+### Features
+
+* explame ([d485441](https://github.com/QxQstar/grape/commit/d485441))
+* start 方法返回promise ([dd762ab](https://github.com/QxQstar/grape/commit/dd762ab))
+* 优化错误提示 ([04a6563](https://github.com/QxQstar/grape/commit/04a6563))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/QxQstar/grape/compare/1.1.4...1.2.0) (2020-01-17)
 
