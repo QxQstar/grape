@@ -31,6 +31,15 @@ export function setStarted(value) {
 }
 
 
+export function isInGrape() {
+    if(!window.GRAPE) window.GRAPE = {}
+    return !!window.GRAPE.root
+}
+export function setInGrape() {
+    if(!window.GRAPE) window.GRAPE = {}
+    return window.GRAPE.root = true;
+}
+
 export const apps = {
     data:[],
     findApp(appName){

@@ -1,10 +1,13 @@
-import {analyzeHTML} from './analyzeIndex.js';
-import {verifyOpts,getOpts} from './helper/params.js'
+import { analyzeHTML } from './analyzeIndex.js';
+import { verifyOpts,getOpts } from './helper/params.js'
 import loader from './loader/index.js'
-import {apps as appHelper} from "./helper/apps.js";
+import { apps as appHelper, setInGrape } from "./helper/apps.js";
+export { default as GrapeLifecycle } from './lifecycles'
+export { isInGrape } from './helper/apps.js'
+
 let originalData = [];
 let isStart = false;
-class Grape {
+export default class Grape {
     constructor(apps = []){
         originalData = apps;
     }
@@ -14,6 +17,7 @@ class Grape {
     }
     start(opts = {}) {
         isStart = true;
+        setInGrape();
         return new Promise(function (resolve, reject) {
             verifyOpts(opts).then(() => {
                 originalData.forEach(app => Grape.loadApp(app));
@@ -31,6 +35,4 @@ class Grape {
         return appHelper.data
     }
 }
-
-export default Grape;
 
