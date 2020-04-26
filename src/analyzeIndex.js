@@ -1,17 +1,12 @@
-import processTpl from './processTpl.js';
-import { bootstrapApp } from './applications.js'
+import { registerApp } from './applications.js'
 import { getRepeatParams } from './helper/params.js'
+import { importEntry } from 'import-html-entry';
+import { genSandbox } from './sandbox'
+import {isFunction,Deferred} from "./helper/utils";
 import { apps as appHelper} from './helper/apps.js'
 import { LOAD_ERROR,LOADING } from './helper/constants.js'
-function getDomain(url) {
-    try {
-        // URL 构造函数不支持使用 // 前缀的 url
-        const href = new URL(url.startsWith('//') ? `${location.protocol}${url}` : url);
-        return href.origin;
-    } catch (e) {
-        return '';
-    }
-}
+
+let prevAppUnmountedDeferred = null;
 
 export function analyzeHTML(app,fetch) {
     let repeatNum = 0,
@@ -24,36 +19,57 @@ export function analyzeHTML(app,fetch) {
 
     });
 
-    function fetchHTML(app,fetch) {
-        fetch(app.projectIndex,{
-            cache:'no-cache'
+    async function fetchHTML(app,fetch) {
+        const { execScripts } = await importEntry(app.projectIndex,{ fetch })
+        if(prevAppUnmountedDeferred) await prevAppUnmountedDeferred.promise
+
+        const sandbox = genSandbox(app.name)
+        execScripts(sandbox.sandbox).then(res => {
+            const globalVariableExports = window[app.name] || {};
+            const {
+                bootstrap = globalVariableExports.default.bootstrap,
+                mount = globalVariableExports.default.mount,
+                unmount = globalVariableExports.default.unmount
+            } = res
+            if (!isFunction(bootstrap) || !isFunction(mount) || !isFunction(unmount)) {
+                throw new Error(`You need to export the functional lifecycles in ${app.name} entry`);
+            }
+            registerApp(app,{
+                bootstrap:[bootstrap],
+                mount:[
+                  async () => {
+                    if(prevAppUnmountedDeferred){
+                        return prevAppUnmountedDeferred.promise
+                    }
+                    return undefined
+                  },
+                  sandbox.mount,
+                    mount,
+                  async () => {
+                      prevAppUnmountedDeferred = new Deferred();
+                  }
+                ],
+                unmount:[
+                  unmount,
+                  sandbox.unmount,
+                  async () => {
+                    if (prevAppUnmountedDeferred) {
+                        prevAppUnmountedDeferred.resolve();
+                    }
+                  },
+                ]
+            });
+        }).catch((msg) => {
+            if(repeatNum < repeatParams.repeatNum) {
+                repeatNum ++;
+                setTimeout(() => {
+                    fetchHTML(app,fetch)
+                },repeatParams.repeatInterval)
+            } else {
+                appHelper.changeAppStatus(app,'LOAD_ERROR');
+                console.error(`${msg}`);
+                window.dispatchEvent(new CustomEvent("grape: app-html-fetch-fail", app));
+            }
         })
-            .then(response => response.text())
-            .then(html => {
-                // 从html文件中匹配出这个项目的css，js路径
-                const { entry,scripts,innerStyles,outerStyles ,innerScripts } = processTpl(html,getDomain(app.projectIndex));
-
-                // 入口js路径
-                app.main = entry;
-                app.innerStyles = innerStyles;
-                app.outerStyles = outerStyles;
-                app.innerScripts = innerScripts;
-                app.outerScripts = scripts.filter(item => item !== entry);
-                // 注册项目
-                bootstrapApp(app);
-            },() => {
-                if(repeatNum < repeatParams.repeatNum) {
-                    repeatNum ++;
-                    setTimeout(() => {
-                        fetchHTML(app,fetch)
-                    },repeatParams.repeatInterval)
-                } else {
-                    appHelper.changeAppStatus(app,'LOAD_ERROR');
-                    console.error(`${app.name}的 html entry 加载失败`);
-                    window.dispatchEvent(new CustomEvent("grape: app-html-fetch-fail", app));
-                }
-            })
     }
-
-
 }
