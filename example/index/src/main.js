@@ -15,9 +15,9 @@ new Grape([
     path:'#/app2'
   }
 ])
-    .setImportMap({
-        vueRouter: "https://cdn.jsdelivr.net/npm/vue-router@3.0.7/dist/vue-router.min.js"
-    })
+    // .setImportMap({
+    //     vueRouter: "https://cdn.jsdelivr.net/npm/vue-router@3.0.7/dist/vue-router.min.js"
+    // })
     .start()
 Vue.config.productionTip = false;
 

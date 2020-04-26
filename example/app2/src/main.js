@@ -1,17 +1,25 @@
 import Vue from 'vue';
-import singleSpaVue from 'single-spa-vue';
+import { GrapeLifecycle,isInGrape } from '../../../src/index.js';
 
 import App from './App.vue';
 import router from './router';
 Vue.config.productionTip = false;
 
-const vueLifecycles = singleSpaVue({
-  Vue,
-  appOptions: {
+let vueLifecycles = {};
+if(isInGrape()) {
+  vueLifecycles = GrapeLifecycle({
+    Vue,
+    appOptions: {
+      render: (h) => h(App),
+      router,
+    },
+  });
+} else {
+  new Vue({
     render: (h) => h(App),
     router,
-  },
-});
+  }).$mount('#app')
+}
 
 export const bootstrap = vueLifecycles.bootstrap;
 export const mount = vueLifecycles.mount;

@@ -21,7 +21,7 @@ module.exports = {
             .libraryTarget('umd')
             .library('')
             .jsonpFunction('webpackJsonp_APP2')
-        config.externals([{'vue-router':'vueRouter'}])
+        // config.externals([{'vue-router':'vueRouter'}])
 
     },
 }
