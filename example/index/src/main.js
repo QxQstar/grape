@@ -5,12 +5,12 @@ import Grape from '../../../src/index.js';
 
 new Grape([
   {
-    name:'app1',
+    name:'APP1',
     projectIndex:'http://localhost:9020',
     path:'#/app1'
   },
   {
-    name:'app2',
+    name:'APP2',
     projectIndex:'http://localhost:8050',
     path:'#/app2'
   }

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { GrapeLifecycle,isInGrape } from '../../../src/index.js';
+import { isInGrape ,GrapeLifecycle } from '../../../src/index.js';
 import element from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue';
@@ -23,7 +23,7 @@ if(isInGrape()) {
     router,
   }).$mount('#app')
 }
-
-export const bootstrap = vueLifecycles.bootstrap;
-export const mount = vueLifecycles.mount;
-export const unmount = vueLifecycles.unmount;
+export default vueLifecycles
+// export const bootstrap = vueLifecycles.bootstrap;
+// export const mount = vueLifecycles.mount;
+// export const unmount = vueLifecycles.unmount;

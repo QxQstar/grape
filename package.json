@@ -24,7 +24,9 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "single-spa": "^4.4.1"
+    "import-html-entry": "^1.6.0",
+    "single-spa": "^4.4.1",
+    "single-spa-vue": "^1.8.2"
   },
   "husky": {
     "hooks": {
