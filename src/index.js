@@ -11,8 +11,7 @@ export default class Grape {
     constructor(apps = []){
         originalData = apps;
     }
-     setImportMap(importMap){
-        // loader.setImportMap(importMap);
+     setImportMap(){
          return this;
     }
     start(opts = {}) {
