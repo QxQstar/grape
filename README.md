@@ -56,10 +56,7 @@ opts 对象的属性
 |fetch|Function|否|-|window.fetch|@hydesign/grape 通过 fetch 函数来获取项目访问入口对应的 html 文档，fetch函数必须返回一个promise|
 |repeatNum|Number|否|-|1|当使用 fetch 获取项目的 html 失败之后，重新获取的次数|
 |repeatInterval|Number|否|-|2000|当使用 fetch 获取项目的 html 失败之后，再次获取间隔的毫秒数|
-
-#### setImportMap 方法
-
-当需要将各个项目的公共库从项目代码中抽离出来统一管理，setImportMap 方法会很有用处。setImportMap 与 webpack externals 配合使用可以抽离出项目中不想打包的库，在项目运行时使用到这个库的时候再动态加载，setImportMap 的用法见下文
+|useSandbox|Boolean|否|-|false|是否开启沙盒模式
 
 #### apps
 
@@ -113,15 +110,26 @@ Grape.loadApp({
 import vue from 'vue';
 import App from './App.vue';
 import router from './router';
-import singleSpaVue from 'single-spa-vue';
-const vueLifecycles = singleSpaVue({
-  Vue:vue,
-  appOptions: {
-    el:'#main',
-    render: (h) => h(App),
-    router,
-  },
-});
+import { isInGrape,GrapeLifecycle } from '@hydesign/grape'
+let vueLifecycles = {}
+if(isInGrape()) {
+   vueLifecycles = GrapeLifecycle({
+    Vue:vue,
+    appOptions: {
+      el:'#main',
+      render: (h) => h(App),
+      router,
+    },
+  });
+} else {
+  // 独立运行
+  new Vue({
+      render: (h) => h(App),
+      router,
+    }).$mount('#main')
+}
+
+
 
 export const bootstrap = vueLifecycles.bootstrap;
 export const mount = vueLifecycles.mount;
@@ -154,28 +162,6 @@ output: {
     libraryTarget: 'umd',
     library: xxx,
 }
-```
-
-## setImportMap 方法与 webpack external 配合
-
-`@hydesign/grape`与`webpack`的 externals 配合使用，能够抽离出项目中不想打包的库，并且在项目运行当使用到这个库的时候在动态加载。
-
-```
- externals(['vue',{'vue-router':'vueRouter'},{'element-ui':'elementUI'},'axios','hytools'])
-```
-
-```js
- import Grape from '@hydesign/grape';
-
- new Grape(appsConf)
-        .setImportMap({
-                "vue": "https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js",
-                "vueRouter": "https://cdn.jsdelivr.net/npm/vue-router@3.0.7/dist/vue-router.min.js",
-                "elementUI":"https://cdn.jsdelivr.net/npm/element-ui@2.12.0/lib/index.js",
-                "Vuex":"https://cdn.jsdelivr.net/npm/vuex@3.1.1/dist/vuex.min.js",
-                "axios":"https://cdn.jsdelivr.net/npm/axios@0.19.0/dist/axios.min.js"
-            })
-        .start()
 ```
 
 ## demo
