@@ -11,7 +11,9 @@ export const OPTS_CONFIG = {
     // 项目获取失败之后重新获取项目的次数
     repeatNum:1,
     // 项目获取失败之后重新获取项目的毫秒数
-    repeatInterval:2000
+    repeatInterval:2000,
+    // 是否开启沙盒模式
+    useSandbox:false
 };
 export const ALL_SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
 export const SCRIPT_TAG_REGEX = /<(script)\s+((?!type=('|')text\/ng-template\3).)*?>.*?<\/\1>/is;

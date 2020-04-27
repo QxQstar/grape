@@ -12,6 +12,7 @@ export default class Grape {
         originalData = apps;
     }
      setImportMap(){
+        console.error('此方法已被弃用')
          return this;
     }
     start(opts = {}) {
@@ -28,7 +29,7 @@ export default class Grape {
         })
     }
     static loadApp(app){
-        if(isStart) analyzeHTML(app,getOpts().fetch);
+        if(isStart) analyzeHTML(app,getOpts());
         else console.error('grape 还没有被启动，调用 grape.start() 去启动 grape')
     }
     get apps() {
