@@ -27,9 +27,9 @@ export function analyzeHTML(app,fetch) {
         execScripts(sandbox.sandbox).then(res => {
             const globalVariableExports = window[app.name] || {};
             const {
-                bootstrap = globalVariableExports.default.bootstrap,
-                mount = globalVariableExports.default.mount,
-                unmount = globalVariableExports.default.unmount
+                bootstrap = globalVariableExports.bootstrap,
+                mount = globalVariableExports.mount,
+                unmount = globalVariableExports.unmount
             } = res
             if (!isFunction(bootstrap) || !isFunction(mount) || !isFunction(unmount)) {
                 throw new Error(`You need to export the functional lifecycles in ${app.name} entry`);
