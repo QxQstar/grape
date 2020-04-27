@@ -21,7 +21,6 @@ if(isInGrape()) {
   }).$mount('#app')
 }
 
-export default vueLifecycles
-// export const bootstrap = vueLifecycles.bootstrap;
-// export const mount = vueLifecycles.mount;
-// export const unmount = vueLifecycles.unmount;
+export const bootstrap = vueLifecycles.bootstrap;
+export const mount = vueLifecycles.mount;
+export const unmount = vueLifecycles.unmount;
