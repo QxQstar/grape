@@ -18,7 +18,7 @@ if(isInGrape()) {
   new Vue({
     render: (h) => h(App),
     router
-  }).$mount('#app')
+  }).$mount('#main')
 }
 
 export const bootstrap = vueLifecycles.bootstrap;

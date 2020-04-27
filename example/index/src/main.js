@@ -14,11 +14,9 @@ new Grape([
     projectIndex:'http://localhost:8050',
     path:'#/app2'
   }
-])
-    // .setImportMap({
-    //     vueRouter: "https://cdn.jsdelivr.net/npm/vue-router@3.0.7/dist/vue-router.min.js"
-    // })
-    .start()
+]).start({
+  useSandbox: true
+})
 Vue.config.productionTip = false;
 
 new Vue({
