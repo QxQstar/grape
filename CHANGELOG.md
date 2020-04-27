@@ -1,3 +1,21 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/QxQstar/grape/compare/1.3.0...2.0.0) (2020-04-27)
+
+
+### Features
+
+* 修改 demo 中暴露生命周期的方式 ([6d43415](https://github.com/QxQstar/grape/commit/6d43415))
+* 修改demo ([869d8ce](https://github.com/QxQstar/grape/commit/869d8ce))
+* 修改例子 ([e339e6f](https://github.com/QxQstar/grape/commit/e339e6f))
+* 修改获取子项目生命周期函数的变量 ([a4be727](https://github.com/QxQstar/grape/commit/a4be727))
+* 删除多余的文件 ([f9eedb1](https://github.com/QxQstar/grape/commit/f9eedb1))
+* 增加沙盒模式 ([2e1a306](https://github.com/QxQstar/grape/commit/2e1a306))
+* 提供子应用的需要暴露的生命周期 ([8554369](https://github.com/QxQstar/grape/commit/8554369))
+* 沙盒 demo ([1708f24](https://github.com/QxQstar/grape/commit/1708f24))
+* 默认不开启沙盒模式 ([99f1b12](https://github.com/QxQstar/grape/commit/99f1b12))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/QxQstar/grape/compare/1.2.0...1.3.0) (2020-02-29)
 
