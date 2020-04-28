@@ -1,3 +1,13 @@
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/QxQstar/grape/compare/2.0.0...2.1.0) (2020-04-28)
+
+
+### Features
+
+* 实现样式的隔离 ([2fbf782](https://github.com/QxQstar/grape/commit/2fbf782))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/QxQstar/grape/compare/1.3.0...2.0.0) (2020-04-27)
 
