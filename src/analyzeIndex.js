@@ -59,6 +59,21 @@ export function analyzeHTML(app,appOpts) {
                 document.head.appendChild(styleDom);
               })
             },
+            // 确保应用挂载点在页面中存在
+            async () => {
+              return new Promise(resolve => {
+                function checkDomID() {
+                  if(!app.domID || document.getElementById(app.domID)){
+                    resolve()
+                  } else {
+                    setTimeout(function () {
+                      checkDomID();
+                    },50)
+                  }
+                }
+                checkDomID()
+              })
+            },
             mountSandbox,
             mount,
             async () => {
