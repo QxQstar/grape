@@ -2,6 +2,7 @@ import { registerApp } from './applications.js'
 import { importEntry } from 'import-html-entry';
 import { genSandbox } from './sandbox'
 import {isFunction,Deferred} from "./helper/utils";
+import {getStyleSheets} from './helper/tpl';
 import { apps as appHelper} from './helper/apps.js'
 import { LOAD_ERROR,LOADING } from './helper/constants.js'
 
@@ -17,7 +18,7 @@ export function analyzeHTML(app,appOpts) {
     });
     async function fetchHTML(app,appOpts) {
       try {
-        const { execScripts } = await importEntry(app.projectIndex,{ fetch } = appOpts)
+        const { execScripts,template } = await importEntry(app.projectIndex,{ fetch } = appOpts)
         if(prevAppUnmountedDeferred) await prevAppUnmountedDeferred.promise
         let proxy = window;
         let mountSandbox = () => Promise.resolve();
@@ -29,6 +30,7 @@ export function analyzeHTML(app,appOpts) {
           unmountSandbox = sandbox.unmount
         }
         const exportLifecycles = await execScripts(proxy)
+        const styleTexts = await getStyleSheets(template)
         const globalVariableExports = window[app.name] || {};
         const {
           bootstrap = globalVariableExports.bootstrap,
@@ -47,6 +49,16 @@ export function analyzeHTML(app,appOpts) {
               }
               return undefined
             },
+            async () => {
+              styleTexts.forEach(styleText => {
+                const styleDom = document.createElement('style');
+                styleDom.type='text/css';
+                styleDom.className = app.name+'_STYLE'
+                const styleTextNode = document.createTextNode(styleText);
+                styleDom.appendChild(styleTextNode);
+                document.head.appendChild(styleDom);
+              })
+            },
             mountSandbox,
             mount,
             async () => {
@@ -56,6 +68,14 @@ export function analyzeHTML(app,appOpts) {
           unmount:[
             unmount,
             unmountSandbox,
+            async () => {
+              const className = app.name+'_STYLE'
+              const styleDoms = document.head.getElementsByClassName(className)
+              for(let i = styleDoms.length - 1; i >= 0; i--){
+                const styleDom = styleDoms[i];
+                styleDom.parentNode.removeChild(styleDom)
+              }
+            },
             async () => {
               if (prevAppUnmountedDeferred) {
                 prevAppUnmountedDeferred.resolve();

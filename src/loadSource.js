@@ -64,9 +64,10 @@ function insertScript(sourceText) {
     scriptDom.innerHTML=sourceText;
     document.body.appendChild(scriptDom);
 }
-function insertStyle(sourceText) {
+function insertStyle(sourceText,id) {
     const styleDom = document.createElement('style');
     styleDom.type='text/css';
+    styleDom.id = id
     const styleTextNode = document.createTextNode(sourceText);
     styleDom.appendChild(styleTextNode);
     document.head.appendChild(styleDom);
