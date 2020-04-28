@@ -1,8 +1,6 @@
 # 基于 single-spa 的微前端框架
 
-解决了 single-spa 没有解决的微前端项目资源加载的问题，到资源加载失败时，提供重新加载资源的方法。
-
-`@hydesign/grape`将每个项目的 html 作为 entry 得到这个项目的 js，css 资源，然后将 js,css 插入到 document 中
+沙盒模式实现全局变量隔离，子项目切换的过程中实现项目样式文件的移除和插入。通过项目的 html 得到项目的脚本和样式
 
 ## 安装
 
@@ -154,13 +152,16 @@ export const unmount = vueLifecycles.unmount;
    ]
  ```
 
-## 将子项目打包成umd格式
+## 打包子项目
+
+除了代码中暴露出相应的生命周期钩子之外，为了让主应用能正确识别子项目暴露出来的一些信息，子项目的打包工具需要增加如下配置：
 
 ```
 output: {
     ...
     libraryTarget: 'umd',
-    library: xxx,
+    library: xxx,// library 与 子项目名一致 
+    jsonpFunction: webpackJsonp_xxx,
 }
 ```
 
