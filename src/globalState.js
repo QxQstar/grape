@@ -1,4 +1,4 @@
-import cloneDeep from 'lodash/cloneDeep'
+import { cloneDeep } from 'lodash'
 import { isFunction,isObject } from "./helper/utils";
 
 let globalState = {}
