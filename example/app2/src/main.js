@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { isInGrape,GrapeLifecycle } from '../../../src/index.js';
+import { isInGrape,GrapeLifecycle } from '../../../dist/index.js';
 
 import App from './App.vue';
 import router from './router';

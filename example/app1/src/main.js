@@ -1,14 +1,16 @@
 import Vue from 'vue';
-import { isInGrape ,GrapeLifecycle } from '../../../src/index.js';
+import { isInGrape ,GrapeLifecycle } from '../../../dist/index.js';
 import element from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue';
 import './mian.css'
 import router from './router';
+import {globalStatusCenter} from './libs'
 
  Vue.use(element);
 Vue.config.productionTip = false;
 let vueLifecycles = {}
+// 在 grape 中运行
 if(isInGrape()) {
   vueLifecycles = GrapeLifecycle({
     Vue,
@@ -24,5 +26,11 @@ if(isInGrape()) {
   }).$mount('#main')
 }
 export const bootstrap = vueLifecycles.bootstrap;
-export const mount = vueLifecycles.mount;
+export const mount = (props) => {
+  props.onGlobalStateChange((statue,prevState) => {
+    console.log(statue,prevState,'app1 中监听')
+  })
+  new globalStatusCenter(props.onGlobalStateChange,props.setGlobalState)
+  return vueLifecycles.mount(props)
+}
 export const unmount = vueLifecycles.unmount;

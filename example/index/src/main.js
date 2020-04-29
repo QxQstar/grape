@@ -1,7 +1,15 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import Grape from '../../../src/index.js';
+import { default as  Grape, initGlobalState} from '../../../dist/index.js';
+const state = {
+  num : 1
+}
+
+const action = initGlobalState(state)
+action.onGlobalStateChange((state,prevState) => {
+  console.log(state,prevState,'主应用中监听')
+})
 
 new Grape([
   {
