@@ -2,7 +2,7 @@ import { analyzeHTML } from './analyzeIndex.js';
 import { verifyOpts,getOpts } from './helper/params.js'
 import { start } from 'single-spa'
 import { apps as appHelper, setInGrape } from "./helper/apps.js";
-import GrapeLifecycle from 'single-spa-vue'
+import GrapeLifecycle from './lifecycles'
 import { isInGrape } from './helper/apps.js'
 
 let originalData = [];
