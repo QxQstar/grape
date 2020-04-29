@@ -24,10 +24,11 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
+    "css.escape": "^1.5.1",
     "import-html-entry": "^1.6.0",
+    "lodash": "^4.17.15",
     "single-spa": "^4.4.1",
-    "single-spa-vue": "^1.8.2",
-    "css.escape": "^1.5.1"
+    "single-spa-vue": "^1.8.2"
   },
   "husky": {
     "hooks": {

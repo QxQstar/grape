@@ -11,7 +11,7 @@ export default class Grape {
     constructor(apps = []){
         originalData = apps;
     }
-     setImportMap(){
+    setImportMap(){
         console.error('此方法已被弃用')
          return this;
     }
@@ -37,3 +37,4 @@ export default class Grape {
     }
 }
 export { GrapeLifecycle, isInGrape }
+export * from './globalState'

@@ -2,6 +2,10 @@ export function isFunction(obj) {
     return typeof obj === 'function';
 }
 
+export function isObject(obj) {
+  return Object.prototype.toString.call(obj) === '[object Object]'
+}
+
 export function isConstructable(fn) {
     const constructableFunctionRegex = /^function\b\s[A-Z].*/;
     const classRegex = /^class\b/;
@@ -26,3 +30,4 @@ export function Deferred() {
     this.reject = reject
   })
 }
+
