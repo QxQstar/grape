@@ -82,9 +82,7 @@ export function analyzeHTML(app,appOpts) {
               })
             },
             mountSandbox,
-            async (props) => {
-              mount({...props,setGlobalState, onGlobalStateChange})
-            },
+            async (props) => mount({...props,setGlobalState, onGlobalStateChange}),
             async () => {
               prevAppUnmountedDeferred = new Deferred();
             }
