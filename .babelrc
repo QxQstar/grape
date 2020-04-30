@@ -6,6 +6,7 @@
     }]
   ],
   "plugins": [
+    "lodash",
     [
       "@babel/plugin-transform-runtime", {
       "corejs": false,

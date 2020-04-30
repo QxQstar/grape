@@ -17,6 +17,7 @@
     "@babel/polyfill": "^7.7.0",
     "@babel/preset-env": "^7.7.7",
     "babel-loader": "^8.0.6",
+    "babel-plugin-lodash": "^3.3.4",
     "commitlint": "^8.2.0",
     "conventional-changelog-cli": "^2.0.28",
     "husky": "^3.1.0",
@@ -24,7 +25,9 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
+    "css.escape": "^1.5.1",
     "import-html-entry": "^1.6.0",
+    "lodash": "^4.17.15",
     "single-spa": "^4.4.1",
     "single-spa-vue": "^1.8.2"
   },

@@ -1,6 +1,6 @@
 # 基于 single-spa 的微前端框架
 
-沙盒模式实现全局变量隔离，子项目切换的过程中实现项目样式文件的移除和插入。通过项目的 html 得到项目的脚本和样式
+沙盒模式实现全局变量隔离，子项目切换的过程中实现项目样式文件的移除和插入，主子应用之间的通信。通过项目的 html 得到项目的脚本和样式
 
 ## 安装
 
@@ -114,6 +114,7 @@ if(isInGrape()) {
    vueLifecycles = GrapeLifecycle({
     Vue:vue,
     appOptions: {
+      // el 指定挂载点
       el:'#main',
       render: (h) => h(App),
       router,
@@ -134,6 +135,67 @@ export const mount = vueLifecycles.mount;
 export const unmount = vueLifecycles.unmount;
 ```
 
+## 主子项目之间通信
+
+在主项目中初始化全局共享的状态
+
+```js
+    import { default as  Grape, initGlobalState} from '@hydesign/grape'
+    const state = {xxx:'xxx'}
+    
+    // 初始化全局 statue
+    const stateActions = initGlobalState(state)
+    // 监听全局 state 的变化
+    stateActions.onGlobalStateChange((state,prevState) => {
+      console.log(state,prevState)
+    })
+    // 修改全局 state
+    stateActions.setGlobalState({xxx:'xxxx'})
+    
+    new Grape([
+            {
+                name:'xxx',// 项目名
+                projectIndex:'http://xxxx.com',// 项目访问入口
+                base:false,// 是否需要一直在页面中显示
+                path:'#/goods',// 项目显示条件。可以是数组
+                routeMode: 'hash' // 路由模式
+            }
+        ])
+        .start()
+```
+
+在子项目的生命周期钩子中得到操作全局state 的具柄
+
+```js
+    import vue from 'vue';
+    import App from './App.vue';
+    import router from './router';
+    import { GrapeLifecycle } from '@hydesign/grape'
+    
+    const vueLifecycles = GrapeLifecycle({
+        Vue:vue,
+        appOptions: {
+          el:'#main',
+          render: (h) => h(App),
+          router,
+        },
+      });
+    
+    export const bootstrap = vueLifecycles.bootstrap;
+    export const unmount = vueLifecycles.unmount;
+    
+    export const mount = (props) => {
+      // 在子项目中监听全局 state 的变更
+      props.onGlobalStateChange((statue,prevState) => {
+        console.log(statue,prevState)
+      })
+      // 在子项目中修改全局 state
+      props.setGlobalState(state)
+      
+      return vueLifecycles.mount(props)
+    }
+  
+```
 ## 给子项目的入口js加标识
 
 经过打包工具（如：webpack）打包之后一个项目在 index.html 中插入的 js 脚本可能不只一个，所以为了确保`@hydesign/grape`能够正确的从项目中解析到入口js，给入口 js 文件加上一个 entry 属性，如果所有的js脚本都没有 entry 属性,`@hydesign/grape`会将index.html 的中最后一个脚本当作入口js

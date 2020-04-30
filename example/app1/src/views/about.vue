@@ -5,6 +5,8 @@
 
 <script>
     import {cloneDeep} from 'loadsh'
+    import {globalStatus} from '../libs'
+
     export default {
         data() {
             return {
@@ -14,6 +16,9 @@
         },
         methods:{
             change(value){
+              globalStatus.setGlobalState({
+                num:value
+              })
                 this.inpute = value
             }
         }

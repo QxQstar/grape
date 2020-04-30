@@ -5,6 +5,7 @@ import {isFunction,Deferred} from "./helper/utils";
 import {getStyleSheets} from './helper/tpl';
 import { apps as appHelper} from './helper/apps.js'
 import { LOAD_ERROR,LOADING } from './helper/constants.js'
+import { getMicroAppStateActions } from './globalState'
 
 let prevAppUnmountedDeferred = null;
 
@@ -40,6 +41,12 @@ export function analyzeHTML(app,appOpts) {
         if (!isFunction(bootstrap) || !isFunction(mount) || !isFunction(unmount)) {
           throw new Error(`You need to export the functional lifecycles in ${app.name} entry`);
         }
+        const appNameId = `${app.name}-${+new Date()}`;
+        const {
+          onGlobalStateChange,
+          setGlobalState,
+          offGlobalStateChange
+        } = getMicroAppStateActions(appNameId)
         registerApp(app,{
           bootstrap:[bootstrap],
           mount:[
@@ -59,8 +66,23 @@ export function analyzeHTML(app,appOpts) {
                 document.head.appendChild(styleDom);
               })
             },
+            // 确保应用挂载点在页面中存在
+            async () => {
+              return new Promise(resolve => {
+                function checkDomID() {
+                  if(!app.domID || document.getElementById(app.domID)){
+                    resolve()
+                  } else {
+                    setTimeout(function () {
+                      checkDomID();
+                    },50)
+                  }
+                }
+                checkDomID()
+              })
+            },
             mountSandbox,
-            mount,
+            async (props) => mount({...props,setGlobalState, onGlobalStateChange}),
             async () => {
               prevAppUnmountedDeferred = new Deferred();
             }
@@ -68,6 +90,9 @@ export function analyzeHTML(app,appOpts) {
           unmount:[
             unmount,
             unmountSandbox,
+            async () => {
+              offGlobalStateChange()
+            },
             async () => {
               const className = app.name+'_STYLE'
               const styleDoms = document.head.getElementsByClassName(className)
