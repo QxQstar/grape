@@ -1,3 +1,18 @@
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/QxQstar/grape/compare/2.1.0...2.2.0) (2020-04-30)
+
+
+### Features
+
+* 修改判断子项目是否运行在GRAPE的方法 ([6bfd2c6](https://github.com/QxQstar/grape/commit/6bfd2c6))
+* 在 demo 中使用主子组件的通信 ([2a0580d](https://github.com/QxQstar/grape/commit/2a0580d))
+* 增加主子应用的通信 ([bf305f3](https://github.com/QxQstar/grape/commit/bf305f3))
+* 定义生命周期 ([d7e1200](https://github.com/QxQstar/grape/commit/d7e1200))
+* 将子项目中的 mount 钩子返回 ([df6ecb2](https://github.com/QxQstar/grape/commit/df6ecb2))
+* 确保子项目的挂载点在界面上存在 ([d60e586](https://github.com/QxQstar/grape/commit/d60e586))
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/QxQstar/grape/compare/2.0.0...2.1.0) (2020-04-28)
 
