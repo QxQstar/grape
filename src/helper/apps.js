@@ -32,12 +32,10 @@ export function setStarted(value) {
 
 
 export function isInGrape() {
-    if(!window.GRAPE) window.GRAPE = {}
-    return !!window.GRAPE.__POWERED_BY_GRAPE__
+    return !!window.__POWERED_BY_GRAPE__
 }
 export function setInGrape() {
-    if(!window.GRAPE) window.GRAPE = {}
-    return window.GRAPE.__POWERED_BY_GRAPE__ = true;
+    return window.__POWERED_BY_GRAPE__ = true;
 }
 
 export const apps = {
