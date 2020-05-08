@@ -4,7 +4,7 @@ import { genSandbox } from './sandbox'
 import {isFunction,Deferred} from "./helper/utils";
 import {getStyleSheets} from './helper/tpl';
 import { apps as appHelper} from './helper/apps.js'
-import { LOAD_ERROR,LOADING } from './helper/constants.js'
+import { LOAD_ERROR,LOADING,LOADED} from './helper/constants.js'
 import { getMicroAppStateActions } from './globalState'
 
 let prevAppUnmountedDeferred = null;
@@ -47,6 +47,7 @@ export function analyzeHTML(app,appOpts) {
           setGlobalState,
           offGlobalStateChange
         } = getMicroAppStateActions(appNameId)
+        appHelper.changeAppStatus(app,LOADED)
         registerApp(app,{
           bootstrap:[bootstrap],
           mount:[
