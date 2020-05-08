@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { isInGrape ,GrapeLifecycle } from '../../../dist/index.js';
+import { isInGrape ,GrapeLifecycle } from '@hydesign/grape';
 import element from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue';
@@ -10,6 +10,7 @@ import {globalStatusCenter} from './libs'
  Vue.use(element);
 Vue.config.productionTip = false;
 let vueLifecycles = {}
+console.log('app-aaapp-aaaa111111')
 // 在 grape 中运行
 if(isInGrape()) {
   vueLifecycles = GrapeLifecycle({

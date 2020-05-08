@@ -1,10 +1,10 @@
 import Vue from 'vue';
-import { isInGrape,GrapeLifecycle } from '../../../dist/index.js';
-
+// import { isInGrape,GrapeLifecycle } from '../../../src/index.js';
+import { isInGrape ,GrapeLifecycle } from '@hydesign/grape';
 import App from './App.vue';
 import router from './router';
 Vue.config.productionTip = false;
-
+console.log('app222222',isInGrape())
 let vueLifecycles = {};
 if(isInGrape()) {
   vueLifecycles = GrapeLifecycle({
